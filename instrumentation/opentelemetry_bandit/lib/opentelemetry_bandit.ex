@@ -523,8 +523,8 @@ defmodule OpentelemetryBandit do
     OpenTelemetry.Ctx.clear()
   end
 
-  defp error_type(%struct{} = reason) when is_exception(reason) do
-    struct
+  defp error_type(%struct_name{} = reason) when is_exception(reason) do
+    struct_name
   end
 
   defp error_type(reason) do
