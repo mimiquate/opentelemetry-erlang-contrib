@@ -63,10 +63,7 @@ defmodule OpentelemetryOban.PluginHandler do
     ctx = OpentelemetryTelemetry.set_current_telemetry_span(@tracer_id, metadata)
 
     # Record exception and mark the span as errored
-    # We use :otel_span.record_exception/5 (Erlang) instead of Span.record_exception/3 (Elixir)
-    # because the Elixir version only works with exception structs (e.g., %RuntimeError{}),
-    # while the Erlang version handles ANY error reason (atoms like :badarg, tuples, etc.)
-    :otel_span.record_exception(ctx, kind, reason, stacktrace, [])
+    Span.record_exception(ctx, kind, reason, stacktrace)
 
     Span.set_status(
       ctx,

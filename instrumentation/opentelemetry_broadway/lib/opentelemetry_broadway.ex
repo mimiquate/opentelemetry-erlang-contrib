@@ -193,7 +193,7 @@ defmodule OpentelemetryBroadway do
     ctx = OpentelemetryTelemetry.set_current_telemetry_span(@tracer_id, metadata)
 
     # Record exception and mark the span as errored
-    Span.record_exception(ctx, reason, stacktrace)
+    Span.record_exception(ctx, kind, reason, stacktrace)
 
     Span.set_status(
       ctx,

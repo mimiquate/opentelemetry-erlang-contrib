@@ -138,9 +138,7 @@ defmodule OpentelemetryXandra do
 
     status = OpenTelemetry.status(:error, inspect(metadata.reason))
     OpenTelemetry.Span.set_status(span_ctx, status)
-
-    :otel_span.record_exception(span_ctx, metadata.kind, metadata.reason, metadata.stacktrace, [])
-
+    OpenTelemetry.Span.record_exception(span_ctx, metadata.kind, metadata.reason, metadata.stacktrace)
     OpentelemetryTelemetry.end_telemetry_span(@tracer_id, metadata)
   end
 

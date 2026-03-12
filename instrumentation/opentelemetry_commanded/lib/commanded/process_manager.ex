@@ -92,11 +92,8 @@ defmodule OpentelemetryCommanded.ProcessManager do
       ) do
     ctx = OpentelemetryTelemetry.set_current_telemetry_span(@tracer_id, meta)
 
-    # try to normalize all errors to Elixir exceptions
-    exception = Exception.normalize(kind, reason, stacktrace)
-
     # record exception and mark the span as errored
-    Span.record_exception(ctx, exception, stacktrace)
+    Span.record_exception(ctx, kind, reason, stacktrace)
     Span.set_status(ctx, OpenTelemetry.status(:error, inspect(reason)))
 
     OpentelemetryTelemetry.end_telemetry_span(@tracer_id, meta)

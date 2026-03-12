@@ -114,11 +114,8 @@ defmodule OpentelemetryCommanded.CommandedCase do
       ) do
     ctx = OpentelemetryTelemetry.set_current_telemetry_span(@tracer_id, meta)
 
-    # try to normalize all errors to Elixir exceptions
-    exception = Exception.normalize(kind, reason, stacktrace)
-
     # record exception and mark the span as errored
-    OpenTelemetry.Span.record_exception(ctx, exception, stacktrace)
+    OpenTelemetry.Span.record_exception(ctx, kind, reason, stacktrace)
     OpenTelemetry.Span.set_status(ctx, OpenTelemetry.status(:error, inspect(reason)))
 
     OpentelemetryTelemetry.end_telemetry_span(@tracer_id, meta)

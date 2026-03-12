@@ -117,14 +117,14 @@ defmodule OpentelemetryOban.JobHandler do
   def handle_job_exception(
         _event,
         _measurements,
-        %{stacktrace: stacktrace, error: error} = metadata,
+        %{kind: kind, reason: reason, stacktrace: stacktrace} = metadata,
         _config
       ) do
     ctx = OpentelemetryTelemetry.set_current_telemetry_span(@tracer_id, metadata)
 
-    Span.record_exception(ctx, error, stacktrace)
+    Span.record_exception(ctx, kind, reason, stacktrace)
     Span.set_status(ctx, OpenTelemetry.status(:error, ""))
-    set_error_type(error)
+    set_error_type(reason)
 
     OpentelemetryTelemetry.end_telemetry_span(@tracer_id, metadata)
   end

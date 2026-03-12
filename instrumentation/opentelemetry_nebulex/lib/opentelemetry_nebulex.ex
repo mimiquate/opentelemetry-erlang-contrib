@@ -97,7 +97,7 @@ defmodule OpentelemetryNebulex do
   def handle_command_exception(_event, _measurements, metadata, _config) do
     ctx = OpentelemetryTelemetry.set_current_telemetry_span(@tracer_id, metadata)
 
-    OpenTelemetry.Span.record_exception(ctx, metadata.reason, metadata.stacktrace)
+    OpenTelemetry.Span.record_exception(ctx, metadata.kind, metadata.reason, metadata.stacktrace)
     OpenTelemetry.Tracer.set_status(OpenTelemetry.status(:error, format_error(metadata.reason)))
 
     OpentelemetryTelemetry.end_telemetry_span(@tracer_id, metadata)

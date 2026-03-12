@@ -218,10 +218,7 @@ defmodule OpentelemetryPhoenix do
         _
       ) do
     ctx = OpentelemetryTelemetry.set_current_telemetry_span(@tracer_id, meta)
-
-    exception = Exception.normalize(kind, reason, stacktrace)
-
-    OpenTelemetry.Span.record_exception(ctx, exception, stacktrace, [])
+    OpenTelemetry.Span.record_exception(ctx, kind, reason, stacktrace)
     OpenTelemetry.Span.set_status(ctx, OpenTelemetry.status(:error, ""))
     OpentelemetryTelemetry.end_telemetry_span(@tracer_id, meta)
   end
